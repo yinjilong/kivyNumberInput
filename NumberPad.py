@@ -74,7 +74,8 @@ class NumberPad(Popup):
         self._value2 = None
         self._operation = None
         self._last = None
-        self._callback = None
+        self._callback_close = None
+        self._callback_escape = None
 
         if init_value:
             self._inpValue.text = init_value
@@ -85,9 +86,11 @@ class NumberPad(Popup):
 
     def key_action(self,*args):
         keys={41:'ESC',42:'DEL',84:'/',85:'*',86:'-',87:'+',88:'RETURN',89:'1',90:'2',91:'3',92:'4',93:'5',94:'6',95:'7',96:'8',97:'9',98:'0',99:'.'}
-        keyboard,keycode,text=args[0:3]
+        # print('got a key',*args)
+        keyboard=args[0]
         keycode=args[1]
         text=args[2]
+        # print(keyboard, keycode, text,type(text))
         if text in keys:
             b=keys[text]
         else:
@@ -102,15 +105,18 @@ class NumberPad(Popup):
             self.delete()
         elif b=='ESC':
             self.dismiss()
+            self._callback_escape()
+            # self.dismiss()
 
-    def set_callback(self,foo):
-        self._callback=foo
+    def set_callback(self,foo_close,foo_escape):
+        self._callback_close=foo_close
+        self._callback_escape=foo_escape
 
     def accept(self,*kwargs):
         if self._regex.match(self._inpValue.text):
             self.result=self._inpValue.text
             self.dismiss()
-            self._callback()
+            self._callback_close()
 
     def set_value(self,b,*kwargs):
         if self._last and self._last in '+-*/':
@@ -179,3 +185,22 @@ class NumberPad(Popup):
                 self._inpValue.text='ERROR'
         pass
 
+    def on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        '''
+        Act when a key is pressed down
+        :param keyboard: The keyboard object
+        :param keycode: The pressed key code
+        :param text: The text that was pressed
+        :param modifiers: A list of keyboard modifiers
+        :return: True to accept the key, or False to ignore it
+        '''
+        if keycode[1] == 'escape':
+            # Dismiss popup upon 'Esc'
+            self.dismiss()
+
+            # Call the cancel_callback if we have it
+            if self.cancel_callback is not None:
+                self.cancel_callback()
+
+        # Grag all keyboard events so that the base app doesn't get anything
+        return True

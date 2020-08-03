@@ -1,4 +1,11 @@
+# The following lines for test
+from kivy.app import App
+from kivy.lang import Builder
+
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
+from kivy.properties import StringProperty
 
 from NumberPad import NumberPad
 
@@ -6,18 +13,28 @@ import re
 
 class NumberInput(TextInput):
 
+    title = StringProperty("Enter a number")
+
     def _on_focus(self, instance, value, *largs):
-        # self.setup_keyboard()
-        # super(NumberInput, self)._on_focus(instance, value, *largs)
-        # # self.background_color=(1.0,0.0,0.0,0.5)
-        # pass
         self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(250,250))
-        self._kb.set_callback(self._keyboard_close)
+        self._kb.title= self.title
+        self._kb.set_callback(self._keyboard_close,self._keyboard_escape)
         self._kb.open()
+
+    def _keyboard_escape(self):
+        self.focus = False
+        self._kb.dismiss()
+        pass
+
 
     def _keyboard_close(self):
         self.text=self._kb.result
-        print("keyboard closed")
+        self.focus = False
+        self._kb.dismiss()
+        pass
+
+    def on_title(self, instance, _title_):
+        self.title=_title_
         pass
 
 class FloatInput(NumberInput):
@@ -41,3 +58,33 @@ class IntegerInput(NumberInput):
         s = re.sub(pat, '', substring)
         return super(IntegerInput, self).insert_text(s, from_undo=from_undo)
 
+
+class TestFloatInput(App):
+    def build(self):
+        instance = Builder.load_string('''
+<TestFloatBox@BoxLayout>
+    orientation:'vertical'
+    BoxLayout:
+        orientation:'horizontal'
+        Label:
+            text:'Input a float number'
+        FloatInput:
+            id:_float_input_
+            write_tab:True
+    BoxLayout:
+        orientation:'horizontal'
+        Label:
+            text:'Width'
+        IntegerInput:
+            id:_integer_input_
+            text:'123'
+            write_tab:True
+            title:'Width'
+TestFloatBox:       
+        
+''')
+        return instance
+
+
+if __name__ == '__main__':
+    TestFloatInput().run()
