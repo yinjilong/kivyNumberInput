@@ -14,8 +14,9 @@ import re
 class NumberPad(Popup):
 
     _font_size=12
+    _err_msgs=["EVAL ERROR","OUT OF RANGE"]
 
-    def __init__(self,init_value='',size=None,**kwargs):
+    def __init__(self,init_value='',size=None, range=(None,None),**kwargs):
         super(NumberPad,self).__init__(**kwargs)
 
         if size is None:
@@ -29,6 +30,10 @@ class NumberPad(Popup):
         else:
             self.size=tuple(size)
             self._font_size = self.size[0]/15
+        if range is None:
+            self.range = (None,None)
+        else:
+            self.range = range
 
         self._vbox = BoxLayout(orientation='vertical')
         self._vbox.padding=(8,8,8,8)
@@ -114,18 +119,26 @@ class NumberPad(Popup):
     def accept(self,*kwargs):
         self.equal()
         if self._regex.match(self._inpValue.text):
-            self.result=self._inpValue.text
-            self.dismiss()
-            self._callback_close()
+            bRange = True
+            if self.range[0] is not None and self.range[0] > float(self._inpValue.text):
+                bRange = False
+            if self.range[1] is not None and  self.range[1] < float(self._inpValue.text):
+                bRange = False
+            if bRange:
+                self.result=self._inpValue.text
+                self.dismiss()
+                self._callback_close()
+            else:
+                self._inpValue.text = self._err_msgs[1]
 
     def set_value(self,b,*kwargs):
-        if self._inpValue.text =="ERROR":
+        if self._inpValue.text in self._err_msgs:
             self._inpValue.text = ""
 
         self._inpValue.text += b
 
     def delete(self,*kwargs):
-        if self._inpValue.text =="ERROR":
+        if self._inpValue.text in self._err_msgs:
             self._inpValue.text = ""
             return
 
@@ -146,7 +159,7 @@ class NumberPad(Popup):
             ans = str(eval(calc_entry))
             self._inpValue.text = ans
         except Exception as error:
-            self._inpValue.text = "ERROR"
+            self._inpValue.text = "EVAL ERROR"
         pass
 
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):

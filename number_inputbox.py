@@ -6,6 +6,7 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty
+from kivy.properties import NumericProperty
 
 from NumberPad import NumberPad
 
@@ -14,9 +15,11 @@ import re
 class NumberInput(TextInput):
 
     title = StringProperty("Enter a number")
+    min_value = NumericProperty(None)
+    max_value = NumericProperty(None)
 
     def _on_focus(self, instance, value, *largs):
-        self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(400,400))
+        self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(400,400), range=(self.min_value,self.max_value))
         self._kb.title= self.title
         self._kb.set_callback(self._keyboard_close,self._keyboard_escape)
         self._kb.open()
@@ -71,6 +74,8 @@ class TestFloatInput(App):
         FloatInput:
             id:_float_input_
             write_tab:True
+            min_value:0.0
+            max_value:10.0
     BoxLayout:
         orientation:'horizontal'
         Label:
