@@ -16,7 +16,7 @@ class NumberInput(TextInput):
     title = StringProperty("Enter a number")
 
     def _on_focus(self, instance, value, *largs):
-        self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(250,250))
+        self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(400,400))
         self._kb.title= self.title
         self._kb.set_callback(self._keyboard_close,self._keyboard_escape)
         self._kb.open()
@@ -67,14 +67,14 @@ class TestFloatInput(App):
     BoxLayout:
         orientation:'horizontal'
         Label:
-            text:'Input a float number'
+            text:'Float number'
         FloatInput:
             id:_float_input_
             write_tab:True
     BoxLayout:
         orientation:'horizontal'
         Label:
-            text:'Width'
+            text:'Integer number'
         IntegerInput:
             id:_integer_input_
             text:'123'
