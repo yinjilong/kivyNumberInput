@@ -15,6 +15,8 @@ Provide NumberPad input for Float/Integer Input widget inherited from kivy.uix.t
 
 [2020/09/04]
   * To fix the bug that the sign of plus/minus number can not be input, the ```eval(str)``` is used to do calculation.
- * Adjust the font size to fit the window size automatically 
+  * Adjust the font size to fit the window size automatically
+  * Add the validity range for numeric input
+   
 
 
