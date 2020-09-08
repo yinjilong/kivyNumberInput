@@ -72,7 +72,7 @@ class NumberPad(Popup):
         Window.bind(on_key_down=self.key_action)
 
         self.content=self._vbox
-        self.auto_dismiss = True
+        self.auto_dismiss = False
         self.title="Enter a number"
         self._response = None
 
