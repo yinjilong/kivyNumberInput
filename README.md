@@ -10,8 +10,13 @@ Provide NumberPad input for Float/Integer Input widget inherited from kivy.uix.t
 
 ## Known issues:
 
+## Todo
+* add close button to end input
 
 ## Changes
+[2020/10/01]
+ * remove line under title
+ * add close button at upper right corner to close input pad
 
 [2020/09/04]
   * To fix the bug that the sign of plus/minus number can not be input, the ```eval(str)``` is used to do calculation.

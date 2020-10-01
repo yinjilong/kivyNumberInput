@@ -11,6 +11,7 @@ from kivy.uix.textinput import TextInput
 import functools
 import re
 
+
 class NumberPad(Popup):
 
     _font_size=12
@@ -40,9 +41,14 @@ class NumberPad(Popup):
 
         self._hbox1=BoxLayout(orientation='horizontal',size_hint_y=0.2)
         # self._labValue=Label(text='Value',size_hint_x=0.2)
+        self._hbox11 = BoxLayout(orientation='horizontal')
         self._inpValue=TextInput(readonly=True,multiline=False,size_hint_x=0.8,font_size=self._font_size)
+        self._btnClose = Button(text=chr(0x274C),size_hint_x=0.1,font_size=self._font_size)
+
+        self._hbox11.add_widget(self._inpValue)
+        self._hbox11.add_widget(self._btnClose)
         # self._hbox1.add_widget(self._labValue)
-        self._hbox1.add_widget(self._inpValue)
+        self._hbox1.add_widget(self._hbox11)
         self._vbox.add_widget(self._hbox1)
 
 
@@ -82,6 +88,7 @@ class NumberPad(Popup):
         self._last = None
         self._callback_close = None
         self._callback_escape = None
+        self._caller = None
 
         if init_value:
             self._inpValue.text = init_value
@@ -89,6 +96,12 @@ class NumberPad(Popup):
 
         # check validity of the input
         self._regex=re.compile('^[-+]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][-+]?[0-9]?)?$')
+
+        # title_label = self.children[0].children[2]
+        # title_label.height = 0
+        self.separator_height = 0
+
+
 
     def key_action(self,*args):
         keys={41:'ESC',42:'DEL',84:'/',85:'*',86:'-',87:'+',88:'RETURN',89:'1',90:'2',91:'3',92:'4',93:'5',94:'6',95:'7',96:'8',97:'9',98:'0',99:'.'}
@@ -112,9 +125,17 @@ class NumberPad(Popup):
             self._callback_escape()
             # self.dismiss()
 
-    def set_callback(self,foo_close,foo_escape):
+    def set_callback(self,foo_close,foo_escape,caller):
         self._callback_close=foo_close
         self._callback_escape=foo_escape
+        self._caller = caller
+        # self._btnClose.bind(on_press=lambda *args: self.dismiss())
+        self._btnClose.bind(on_press=self.on_close)
+
+    def on_close(self,*args):
+        self.dismiss()
+        self._caller._keyboard_escape()
+
 
     def accept(self,*kwargs):
         self.equal()

@@ -21,7 +21,7 @@ class NumberInput(TextInput):
     def _on_focus(self, instance, value, *largs):
         self._kb=NumberPad(init_value=self.text,size_hint=(0.5,0.5),size=(400,400), range=(self.min_value,self.max_value))
         self._kb.title= self.title
-        self._kb.set_callback(self._keyboard_close,self._keyboard_escape)
+        self._kb.set_callback(self._keyboard_close,self._keyboard_escape,self)
         self._kb.open()
 
     def _keyboard_escape(self):
