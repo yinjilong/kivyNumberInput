@@ -11,7 +11,7 @@ Provide NumberPad input for Float/Integer Input widget inherited from kivy.uix.t
 ## Known issues:
 
 ## Todo
-* add close button to end input
+
 
 ## Changes
 [2020/10/01]
