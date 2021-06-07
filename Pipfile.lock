@@ -22,6 +22,7 @@
                 "sha256:50b1e4f8446b06f41be7dd6338db18e0990601dce795c2b1686458aa7e8fa7d8"
             ],
             "version": "==2021.5.30"
+
         },
         "chardet": {
             "hashes": [
@@ -78,6 +79,7 @@
                 "sha256:d66e804411278594d764fc69ec36ec13d9ae9147193a1740cd34d272ca383b8e"
             ],
             "version": "==2.9.0"
+
         },
         "requests": {
             "hashes": [
@@ -93,6 +95,7 @@
             ],
             "index": "pypi",
             "version": "==1.26.5"
+
         }
     },
     "develop": {}
