@@ -10,7 +10,7 @@ Provide NumberPad input for Float/Integer Input widget inherited from kivy.uix.t
  - value range can be set
 
 ## Demo
-![](demo\numpad-demo1.gif)
+![](https://raw.githubusercontent.com/yinjilong/kivyNumberInput/refs/heads/master/demo/numpad-demo1.gif)
 
 ## Known issues:
 
