@@ -7,6 +7,10 @@ Provide NumberPad input for Float/Integer Input widget inherited from kivy.uix.t
 ## Features:
  - Support pad input and simple calculator
  - title can be set
+ - value range can be set
+
+## Demo
+![](demo\numpad-demo1.gif)
 
 ## Known issues:
 
